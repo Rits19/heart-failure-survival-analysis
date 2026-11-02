@@ -20,7 +20,7 @@ table(hf$DEATH_EVENT)   # 203 alive, 96 died
 # Surv() joins follow-up time (days) with whether the death happened
 km_all <- survfit(Surv(time, DEATH_EVENT) ~ 1, data = hf)
 
-km_all   # median is NA because fewer than half of the patients died
+km_all   # no median shown, since more than half of the patients survived
 
 # Share of patients still alive at chosen days
 summary(km_all, times = c(50, 100, 150, 200, 250))
@@ -83,7 +83,7 @@ dev.off()
 # ---- Cox proportional hazards regression ----
 
 # Several factors in one model; exp(coef) is the hazard ratio
-# HR above 1 = higher risk of death, HR below 1 = lower risk
+# HR above 1 means higher risk of death, below 1 means lower risk
 cox_model <- coxph(Surv(time, DEATH_EVENT) ~ age + ejection_fraction +
                      serum_creatinine + serum_sodium + anaemia +
                      high_blood_pressure + diabetes + sex + smoking,
