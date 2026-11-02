@@ -20,6 +20,7 @@ I wanted to find out how many heart-failure patients survive over the follow-up 
 3. Split patients by ejection fraction (below 40 and 40 or above) and compared the two groups with the log-rank test
 4. Cox proportional hazards regression with 9 factors: age, ejection fraction, serum creatinine, serum sodium, anaemia, high blood pressure, diabetes, sex and smoking
 5. Repeated the Kaplan–Meier estimate, log-rank test and Cox regression in SAS (PROC LIFETEST and PROC PHREG) and checked that the results match R
+6. Checked the proportional hazards assumption of the Cox model (`cox.zph`)
 
 ## Results
 
@@ -84,7 +85,7 @@ Patients with an ejection fraction below 40 had worse survival than patients wit
 
 - Only 299 patients and 96 deaths: a small dataset gives less certain results.
 - The cut-off of 40: I chose it because it is commonly used for a weak heart. A different cut-off could change the groups.
-- Proportional hazards assumption: the Cox model assumes that a factor’s effect on risk stays about the same over time. I did not test this. We can do it later with one line of code, cox.zph(cox_model).
+- Proportional hazards assumption: the Cox model assumes that a factor's effect on risk stays about the same over time. I tested this with `cox.zph`. The global test was fine (p = 0.376), but ejection fraction showed a mild warning (p = 0.036), so its effect may change a little over time. I did not adjust the model for this.
 
 ## Files
 
