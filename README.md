@@ -4,7 +4,7 @@ Survival analysis of heart-failure patients using Kaplan-Meier estimation, the l
 
 ## Objective
 
-I wanted to find out how many heart-failure patients survive over the follow-up period, and which factors (like age or ejection fraction) are linked to a higher risk of death.
+I wanted to find out how many heart-failure patients survive over the follow-up period and which factors (like age or ejection fraction) are linked to a higher risk of death.
 
 ## Data
 
@@ -76,9 +76,9 @@ Patients with an ejection fraction below 40 had worse survival than patients wit
 
 ## Limitations
 
-- Only 299 patients and 96 deaths.
-- I chose the ejection fraction cut-off of 40 as a commonly used clinical value. A different cut-off could change the groups.
-- I did not test the proportional hazards assumption of the Cox model.
+- Only 299 patients and 96 deaths: a small dataset gives less certain results.
+- The cut-off of 40: I chose it because it is commonly used for a weak heart. A different cut-off could change the groups.
+- Proportional hazards assumption: the Cox model assumes that a factor’s effect on risk stays about the same over time. I did not test this. We can do it later with one line of code, cox.zph(cox_model).
 
 ## Files
 
