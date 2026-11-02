@@ -1,6 +1,6 @@
-# Heart Failure Survival Analysis (R)
+# Heart Failure Survival Analysis (R/SAS)
 
-Survival analysis of heart-failure patients using Kaplan-Meier estimation, the log-rank test and Cox regression.
+Survival analysis of heart-failure patients using Kaplan–Meier estimation, the log-rank test and Cox regression, done in R and repeated in SAS.
 
 ## Objective
 
@@ -19,8 +19,11 @@ I wanted to find out how many heart-failure patients survive over the follow-up 
 2. Kaplan–Meier estimate of survival for all patients
 3. Split patients by ejection fraction (below 40 and 40 or above) and compared the two groups with the log-rank test
 4. Cox proportional hazards regression with 9 factors: age, ejection fraction, serum creatinine, serum sodium, anaemia, high blood pressure, diabetes, sex and smoking
+5. Repeated the Kaplan–Meier estimate, log-rank test and Cox regression in SAS (PROC LIFETEST and PROC PHREG) and checked that the results match R
 
 ## Results
+
+Results below are from R. The SAS output gave the same numbers (for example log-rank chi-square 9.47, p = 0.0021, and the same hazard ratios).
 
 ### 1. Overall survival
 
@@ -73,6 +76,9 @@ Patients with an ejection fraction below 40 had worse survival than patients wit
 - The overall curve ends near 0.57, which is about 42% dead, not 32%, because the Kaplan–Meier method accounts for patients whose follow-up ended early.
 - A hazard ratio below 1 means lower risk and above 1 means higher risk.
 - These results show links, not proof of cause.
+- In SAS, the censoring value goes in brackets: `time*DEATH_EVENT(0)` means 0 is censored. SAS also calls a death a "failure".
+- My first SAS Cox model would have differed slightly from R, because SAS handles tied times differently by default. Adding `ties=efron` made the results match R exactly.
+- The two programs gave slightly different confidence limits for the median survival (193 days in SAS and 198 in R), because they use different formulas. The median itself was the same, 241 days.
 
 ## Limitations
 
@@ -87,12 +93,12 @@ Patients with an ejection fraction below 40 had worse survival than patients wit
 - `output/km_overall.png`: overall survival curve
 - `output/km_by_ef.png`: survival by ejection fraction
 - `output/cox_results.csv`: Cox regression results
+- `02_survival.sas`: SAS version (PROC LIFETEST and PROC PHREG)
 
 ## Tools
 
-R (survival, dplyr)
+R (survival, dplyr), SAS (PROC IMPORT, PROC LIFETEST, PROC PHREG)
 
 ## Next steps
 
 - Check the proportional hazards assumption of the Cox model
-- Repeat the Kaplan–Meier analysis and log-rank test in SAS (PROC LIFETEST)
