@@ -1,29 +1,28 @@
 # Heart failure survival analysis
-# Data: Heart Failure Clinical Records (299 patients)
+# Data: Heart Failure Clinical Records (UCI), 299 patients
+# Methods: Kaplan-Meier, log-rank test, Cox regression
 
 library(dplyr)
 library(survival)
 
-# Read the data
+# ---- Load the data and check it ----
 hf <- read.csv("heart_failure_clinical_records_dataset.csv")
 
-# First look: size, columns, missing values
-dim(hf)
+dim(hf)          # 299 patients, 13 columns
 names(hf)
-sum(is.na(hf))
+sum(is.na(hf))   # 0 missing values
 
-# How many patients died during follow-up?
-table(hf$DEATH_EVENT)
+# DEATH_EVENT: 1 = died during follow-up, 0 = alive at the end (censored)
+table(hf$DEATH_EVENT)   # 203 alive, 96 died
 
 # ---- Kaplan-Meier: survival for all patients ----
 
-# Surv() combines follow-up time and the death event
+# Surv() joins follow-up time (days) with whether the death happened
 km_all <- survfit(Surv(time, DEATH_EVENT) ~ 1, data = hf)
 
-# Overall summary
-km_all
+km_all   # median is NA because fewer than half of the patients died
 
-# Survival probability at some chosen days
+# Share of patients still alive at chosen days
 summary(km_all, times = c(50, 100, 150, 200, 250))
 
 # ---- Plot the overall survival curve ----
@@ -48,7 +47,7 @@ dev.off()
 hf <- hf %>%
   mutate(ef_group = ifelse(ejection_fraction < 40, "EF below 40", "EF 40 or above"))
 
-# Check the group sizes and deaths in each group
+# Group sizes and deaths in each group
 table(hf$ef_group)
 table(hf$ef_group, hf$DEATH_EVENT)
 
@@ -56,7 +55,7 @@ table(hf$ef_group, hf$DEATH_EVENT)
 km_ef <- survfit(Surv(time, DEATH_EVENT) ~ ef_group, data = hf)
 km_ef
 
-# Log-rank test: the blank is the grouping variable
+# Log-rank test: do the two groups survive differently?
 survdiff(Surv(time, DEATH_EVENT) ~ ef_group, data = hf)
 
 # ---- Plot: survival by ejection fraction group ----
@@ -83,7 +82,8 @@ dev.off()
 
 # ---- Cox proportional hazards regression ----
 
-# Several factors in one model
+# Several factors in one model; exp(coef) is the hazard ratio
+# HR above 1 = higher risk of death, HR below 1 = lower risk
 cox_model <- coxph(Surv(time, DEATH_EVENT) ~ age + ejection_fraction +
                      serum_creatinine + serum_sodium + anaemia +
                      high_blood_pressure + diabetes + sex + smoking,
