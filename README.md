@@ -100,6 +100,3 @@ Patients with an ejection fraction below 40 had worse survival than patients wit
 
 R (survival, dplyr), SAS (PROC IMPORT, PROC LIFETEST, PROC PHREG)
 
-## Next steps
-
-- Check the proportional hazards assumption of the Cox model
