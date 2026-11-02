@@ -105,3 +105,13 @@ cox_table <- data.frame(
 
 cox_table
 write.csv(cox_table, "output/cox_results.csv", row.names = FALSE)
+
+# ---- Check the proportional hazards assumption ----
+
+# Tests whether each factor's effect on risk stays steady over time.
+# p below 0.05 is a warning for that factor.
+zph <- cox.zph(cox_model)
+zph   # GLOBAL p = 0.376; only ejection_fraction is below 0.05 (p = 0.036)
+
+# Plot for ejection fraction, to see if its effect changes over time
+plot(zph, var = "ejection_fraction")
