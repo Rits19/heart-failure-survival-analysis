@@ -1,6 +1,6 @@
 # Heart Failure Survival Analysis (R)
 
-Survival analysis of heart-failure patients using Kaplan–Meier estimation, the log-rank test and Cox regression.
+Survival analysis of heart-failure patients using Kaplan-Meier estimation, the log-rank test and Cox regression.
 
 ## Objective
 
